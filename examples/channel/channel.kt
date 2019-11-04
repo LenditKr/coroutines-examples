@@ -1,9 +1,15 @@
 package channel
 
-import java.util.*
-import java.util.concurrent.atomic.*
-import java.util.concurrent.locks.*
-import kotlin.coroutines.*
+import java.util.ArrayDeque
+import java.util.ArrayList
+import java.util.NoSuchElementException
+import java.util.concurrent.atomic.AtomicLong
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.startCoroutine
+import kotlin.coroutines.suspendCoroutine
 
 interface SendChannel<T> {
     suspend fun send(value: T)
@@ -23,14 +29,26 @@ interface ReceiveIterator<out T> {
     suspend operator fun next(): T
 }
 
+// const is equal to public static final
 private const val CHANNEL_CLOSED = "Channel was closed"
 
 private val channelCounter = AtomicLong() // number channels for debugging
 
+// Channel은 Send, Receive가 구현되어있다.
 class Channel<T>(val capacity: Int = 1) : SendChannel<T>, ReceiveChannel<T> {
+
+    // 1. init block
+    // https://kotlinlang.org/docs/reference/classes.html
+    // During an instance initialization, the initializer blocks are executed in the same order as they appear in the class body,
+    // interleaved with the property initializers:
+    //
+    // 2. kotlin contract
+    // https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.contracts/index.html
+    //
     init { require(capacity >= 1) }
     private val number = channelCounter.incrementAndGet() // for debugging
     private var closed = false
+    // ArrayDeque, 어레이 덱
     private val buffer = ArrayDeque<T>(capacity)
     private val waiters = SentinelWaiter<T>()
 
