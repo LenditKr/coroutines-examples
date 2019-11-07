@@ -299,6 +299,7 @@ sealed class Waiter<T> {
 
     open fun unlink() { unlinkOne() }
 
+    // prev, next를 서로 연결해주고 자신의 link는 끊는다.
     fun unlinkOne() {
         val prev = this.prev!!
         val next = this.next!!
@@ -342,6 +343,8 @@ class IteratorHasNextWaiter<T>(val c: Continuation<Boolean>, val it: Channel<T>.
     override fun resumeClosed() { it.setClosed(); c.resume(false) }
 }
 
+
+// select.kt
 data class Selector<R>(val c: Continuation<R>, val cases: List<SelectCase<*, R>>) {
     var resolved = false
 
@@ -354,6 +357,7 @@ data class Selector<R>(val c: Continuation<R>, val cases: List<SelectCase<*, R>>
     }
 }
 
+// whileSelect에 들어갈 수 있는 SelectCase를 정의
 sealed class SelectCase<T, R> : Waiter<T>() {
     lateinit var selector: Selector<R>
     abstract fun select(selector: Selector<R>): Boolean

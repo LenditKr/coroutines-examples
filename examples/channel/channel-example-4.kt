@@ -1,6 +1,9 @@
 package channel.example4
 
-import channel.*
+import channel.Channel
+import channel.SendChannel
+import channel.go
+import channel.mainBlocking
 
 // https://tour.golang.org/concurrency/4
 
@@ -19,6 +22,8 @@ suspend fun fibonacci(n: Int, c: SendChannel<Int>) {
 fun main(args: Array<String>) = mainBlocking {
     val c = Channel<Int>(2)
     go { fibonacci(10, c) }
+
+    // Channel은 iterable함
     for (i in c) {
         println(i)
     }

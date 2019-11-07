@@ -1,13 +1,17 @@
 package channel.example8
 
-import channel.*
-import java.util.*
+import channel.Channel
+import channel.SendChannel
+import channel.go
+import channel.mainBlocking
+import java.util.Collections
 
 // https://tour.golang.org/concurrency/7
 // https://tour.golang.org/concurrency/8
 
 val treeSize = 10
 
+// preorder traversal
 suspend fun Tree.walk(ch: SendChannel<Int>): Unit {
     left?.walk(ch)
     ch.send(value)
@@ -17,9 +21,11 @@ suspend fun Tree.walk(ch: SendChannel<Int>): Unit {
 suspend fun same(t1: Tree, t2: Tree): Boolean {
     val c1 = Channel<Int>()
     val c2 = Channel<Int>()
+    // 2개의 Tree를 preorder 순회한 결과를 Channel에 기록해서
     go { t1.walk(c1) }
     go { t2.walk(c2) }
     var same = true
+    // 그 2개의 채널이 같은지 비교한다.
     for (i in 1..treeSize) {
         val v1 = c1.receive()
         val v2 = c2.receive()
@@ -40,7 +46,7 @@ fun main(args: Array<String>) = mainBlocking {
 }
 
 // https://github.com/golang/tour/blob/master/tree/tree.go
-
+// https://en.wikipedia.org/wiki/Tree_(data_structure)
 data class Tree(val value: Int, val left: Tree? = null, val right: Tree? = null)
 
 fun Tree?.insert(v: Int): Tree {

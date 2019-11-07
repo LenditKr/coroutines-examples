@@ -8,6 +8,7 @@ import kotlin.coroutines.intrinsics.intercepted
 import kotlin.coroutines.intrinsics.suspendCoroutineUninterceptedOrReturn
 import kotlin.coroutines.resume
 
+// Lock과 Unlock을 구현한다.
 class Mutex {
     /*
        Note: this is a non-optimized implementation designed for understandability, so it just
