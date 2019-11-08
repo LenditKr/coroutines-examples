@@ -1,10 +1,14 @@
 package mutex
 
-import java.util.concurrent.*
-import java.util.concurrent.atomic.*
-import kotlin.coroutines.*
-import kotlin.coroutines.intrinsics.*
+import java.util.concurrent.ConcurrentLinkedQueue
+import java.util.concurrent.atomic.AtomicInteger
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.intrinsics.COROUTINE_SUSPENDED
+import kotlin.coroutines.intrinsics.intercepted
+import kotlin.coroutines.intrinsics.suspendCoroutineUninterceptedOrReturn
+import kotlin.coroutines.resume
 
+// Lock과 Unlock을 구현한다.
 class Mutex {
     /*
        Note: this is a non-optimized implementation designed for understandability, so it just
@@ -47,6 +51,7 @@ class Mutex {
         }
     }
 
+    // test
     fun unlock() {
         while (true) { // lock-free loop on state
             // see if can unlock

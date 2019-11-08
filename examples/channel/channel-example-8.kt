@@ -1,7 +1,10 @@
 package channel.example8
 
-import channel.*
-import java.util.*
+import channel.Channel
+import channel.SendChannel
+import channel.go
+import channel.mainBlocking
+import java.util.Collections
 
 // https://tour.golang.org/concurrency/7
 // https://tour.golang.org/concurrency/8
@@ -20,10 +23,13 @@ suspend fun same(t1: Tree, t2: Tree): Boolean {
     // capacity == 1인 채널을 만든다.
     val c1 = Channel<Int>()
     val c2 = Channel<Int>()
+
+    // 2개의 Tree를 inorder 순회한 결과를 Channel에 기록해서
     // 탐색 시작
     go { t1.walk(c1) }
     go { t2.walk(c2) }
     var same = true
+    // 그 2개의 채널이 같은지 비교한다.
     for (i in 1..treeSize) {
         // c1, c2 채널들을 소비하기 전까지 탐색은 멈춰있을 것이다.
         val v1 = c1.receive()
@@ -48,7 +54,7 @@ fun main(args: Array<String>) = mainBlocking {
 }
 
 // https://github.com/golang/tour/blob/master/tree/tree.go
-
+// https://en.wikipedia.org/wiki/Tree_(data_structure)
 data class Tree(val value: Int, val left: Tree? = null, val right: Tree? = null)
 
 fun Tree?.insert(v: Int): Tree {
