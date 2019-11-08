@@ -13,7 +13,9 @@ suspend fun say(s: String) {
 }
 
 fun main(args: Array<String>) = mainBlocking {
+    // suspend function -> run Parallel
     go { say("world") }
+    // call suspend function
     say("hello")
 }
 
