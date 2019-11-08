@@ -19,6 +19,8 @@ suspend fun fanIn(input1: ReceiveChannel<String>, input2: ReceiveChannel<String>
 }
 
 fun main(args: Array<String>) = mainBlocking {
+    // boring("Joe"), boring("Ann")에서 결과값을 send한 ReceiveChannel를 각각 생성 - 수행시간은 가변적임
+    // fanIn에서 새로운 ReceiveChannel을 리턴(해당 채널에 변수로 받은 두개의 ReceiveChannel들의 값을 async하게 send)
     val c = fanIn(boring("Joe"), boring("Ann"))
     for (i in 0..9) {
         println(c.receive())

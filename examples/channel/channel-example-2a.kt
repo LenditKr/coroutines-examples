@@ -36,6 +36,7 @@ fun main(args: Array<String>) = mainBlocking {
         sum(s.subList(0, s.size / 2), c)
     }
 
+    // receive 할때까지 대기(sum에서 로직 수행 후 채널 c에 send 하여 값을 받을 때까지)
     val time = measureTimeMillis {
         val x = c.receive()
         val y = c.receive()

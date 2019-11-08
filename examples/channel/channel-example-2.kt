@@ -10,6 +10,7 @@ suspend fun sum(s: List<Int>, c: SendChannel<Int>) {
     for (v in s) {
         sum += v
     }
+    // 결과값을 c로 보낸다
     c.send(sum)
 }
 
@@ -17,12 +18,12 @@ suspend fun sum(s: List<Int>, c: SendChannel<Int>) {
 fun main(args: Array<String>) = mainBlocking {
     val s = listOf(7, 2, 8, -9, 4, 0)
     val c = Channel<Int>()
-    // async 뒤에 절반 합산해서 채널 c로 보내고
+    // listOf(7, 2, 8), async 뒤에 절반 합산해서 채널 c로 보내고
     go { sum(s.subList(s.size / 2, s.size), c) }
-    // async 하게 앞에 절반 합산해서 채널 c로 보낸다.
+    // listOf(-9, 4, 0), async 하게 앞에 절반 합산해서 채널 c로 보낸다.
     go { sum(s.subList(0, s.size / 2), c) }
 
-    // 받아서
+    // 채널에 전송된 값 받기
     val x = c.receive()
     val y = c.receive()
 
