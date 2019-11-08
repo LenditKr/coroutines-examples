@@ -8,9 +8,8 @@ import channel.boring.*
 suspend fun fanIn(input1: ReceiveChannel<String>, input2: ReceiveChannel<String>): ReceiveChannel<String> {
     val c = Channel<String>()
     go {
-        for (v in input1){
+        for (v in input1)
             c.send(v)
-        }
     }
     go {
         for (v in input2)
