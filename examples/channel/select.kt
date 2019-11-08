@@ -1,13 +1,17 @@
 package channel
 
-import kotlin.coroutines.*
+import kotlin.coroutines.suspendCoroutine
 
 suspend inline fun <R> select(block: SelectorBuilder<R>.() -> Unit): R =
     SelectorBuilder<R>().apply { block() }.doSelect()
 
 class SelectorBuilder<R> {
+    // select case 리스트
     private val cases = mutableListOf<SelectCase<*, R>>()
 
+    // case에 등록할 수 있는 3가지 경우의 수를 정의
+
+    // SendChannel에 onSend함수 추가 SendCase
     fun <T> SendChannel<T>.onSend(value: T, action: () -> R) {
         cases.add(SendCase(this, value, action))
     }
