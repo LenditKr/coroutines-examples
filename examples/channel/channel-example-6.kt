@@ -10,6 +10,8 @@ import delay.delay
 fun main(args: Array<String>) = mainBlocking {
     val tick = Time.tick(100)
     val boom = Time.after(500)
+
+    //
     whileSelect {
         // tick은 지속적으로 시간을 보내므로 100ms마다 receive
         tick.onReceive {

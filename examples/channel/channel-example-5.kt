@@ -12,6 +12,10 @@ import channel.whileSelect
 suspend fun fibonacci(c: SendChannel<Int>, quit: ReceiveChannel<Int>) {
     var x = 0
     var y = 1
+
+    // when 문과 비슷하다.
+    // 이 피보나치 함수는 두개의 채널 송신, 수신을 갖고 있고
+    // 이 예제에서는 수신이 일어나거나 송신 중 하나의 역할을 한다.
     whileSelect {
         c.onSend(x) {
             val next = x + y

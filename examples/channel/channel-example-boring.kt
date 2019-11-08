@@ -6,6 +6,7 @@ import java.util.*
 
 // https://talks.golang.org/2012/concurrency.slide#25
 
+// 계속 랜덤한 인터벌을 두고 string을 송신하는 채널을 리턴한다.
 suspend fun boring(msg: String): ReceiveChannel<String> { // returns receive-only channel of strings
     val c = Channel<String>()
     val rnd = Random()
