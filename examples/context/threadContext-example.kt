@@ -1,8 +1,9 @@
 package context
 
-import delay.*
-import future.*
-import util.*
+import delay.delay
+import future.await
+import future.future
+import util.log
 
 fun main(args: Array<String>) {
     log("Starting MyEventThread")
@@ -25,6 +26,8 @@ fun main(args: Array<String>) {
         val sum = f1.await() + f2.await()
         log("And the sum is $sum")
     }
+    log("before get")
     f.get()
+    log("after get")
     log("Terminated")
 }
