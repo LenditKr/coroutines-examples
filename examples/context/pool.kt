@@ -6,8 +6,7 @@ import kotlin.coroutines.*
 
 object CommonPool : Pool(ForkJoinPool.commonPool())
 
-open class Pool(val pool: ForkJoinPool) : AbstractCoroutineContextElement(ContinuationInterceptor),
-    ContinuationInterceptor {
+open class Pool(val pool: ForkJoinPool) : AbstractCoroutineContextElement(ContinuationInterceptor), ContinuationInterceptor {
     override fun <T> interceptContinuation(continuation: Continuation<T>): Continuation<T> =
         PoolContinuation(pool, continuation.context.fold(continuation) { cont, element ->
             if (element != this@Pool && element is ContinuationInterceptor)
