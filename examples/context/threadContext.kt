@@ -13,8 +13,10 @@ fun newSingleThreadContext(name: String) = ThreadContext(1, name)
  *
  * Marks coroutine context element that intercepts coroutine continuations.
  * The coroutines framework uses ContinuationInterceptor.Key to retrieve the interceptor and intercepts all coroutine continuations with interceptContinuation invocations.
+ *
  * ContinuationInterceptor: 코루틴 컨텍스트를 coroutine 의
- * 코루틴 프레임워크는 ontinuationInterceptor.Key 를 사용해서 인터셉터를 검색하고 interceptContinuation 실행을 통해 모든 coroutine continuations 을 가로챈다.
+ * 코루틴 프레임워크는 continuationInterceptor.Key 를 사용해서 인터셉터를 검색하고
+ * interceptContinuation 실행을 통해 모든 coroutine continuations 을 가로챈다.
  */
 class ThreadContext(
     nThreads: Int,

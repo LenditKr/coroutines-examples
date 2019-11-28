@@ -5,9 +5,8 @@ import kotlin.coroutines.*
 
 suspend fun <T> CompletableFuture<T>.await(): T =
     /**
-     * Suspending functions may invoke any regular functions,
-     * but to actually suspend execution they must invoke some other suspending function.
-     * In particular, this await implementation invokes a suspending function suspendCoroutine that is defined in the standard library (in kotlin.coroutines package) as a top-level suspending function:
+     * Suspending 함수는 보통의 함수를 실행하지만 다른 suspending 함수를 실행해야할 때 실행이 중단된다. (delay 같은??)
+     * 특히, await 의 구현은 suspending 함수 suspendCoroutine을 실행한다.
      *
      * continuation 객체의 실행 상태를 캡처하고 이 continuation 을 specified block 에 전달한다.
      *
@@ -21,6 +20,14 @@ suspend fun <T> CompletableFuture<T>.await(): T =
      * If continuation was resumed before returning from inside of the block, then the coroutine is not considered to have been suspended and continues to execute.
      */
 
+    /**
+     * suspendCoroutine 이 coroutine 안에서 실행될 때
+     * continuation instance 안에 coroutine 의 실행 state 를 캡처하고 argument block 에 파라미터로 제공
+     * coroutine 재개를 위해 block 이 resume 을 실행
+     * resume 을 실행하지 않고 suspendCoroutine 이 리턴되면 coroutine 의 중단이 일어남
+     *
+     *
+     */
     suspendCoroutine<T> { cont: Continuation<T> ->
         whenComplete { result, exception ->
             if (exception == null) // the future has been completed normally
