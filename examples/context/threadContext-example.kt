@@ -1,8 +1,9 @@
 package context
 
-import delay.*
-import future.*
-import util.*
+import delay.delay
+import future.await
+import future.future
+import util.log
 
 fun main(args: Array<String>) {
     log("Starting MyEventThread")
@@ -39,7 +40,17 @@ fun main(args: Array<String>) {
         val sum = f1.await() + f2.await()
         log("And the sum is $sum")
     }
+
+    log("before get")
     // await
     f.get()
+    log("after get")
     log("Terminated")
+
+    /**
+    Dispatchers가 import되어 있지 않음
+    launch(Dispatchers.Default) { // will get dispatched to DefaultDispatcher
+        println("Default               : I'm working in thread ${Thread.currentThread().name}")
+    }
+    */
 }

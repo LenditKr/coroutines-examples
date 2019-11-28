@@ -5,7 +5,7 @@ import kotlin.coroutines.Continuation
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.startCoroutine
 
-// TODO: CouroutineContext
+// CoroutineContext를 지정해서 BlockingCorouting에 context로 세팅하고 block을 실행시킨다.
 fun <T> runBlocking(context: CoroutineContext, block: suspend () -> T): T =
     BlockingCoroutine<T>(context).also { block.startCoroutine(it) }.getValue()
 

@@ -1,11 +1,16 @@
 package context
 
-import run.*
-import java.util.concurrent.*
-import kotlin.coroutines.*
+import run.launch
+import java.util.concurrent.ForkJoinPool
+import kotlin.coroutines.AbstractCoroutineContextElement
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.ContinuationInterceptor
+import kotlin.coroutines.CoroutineContext
 
+// CoroutineContext
 object CommonPool : Pool(ForkJoinPool.commonPool())
 
+// ForkJoinPool을 이용해서 CoroutineContext 생성
 open class Pool(val pool: ForkJoinPool) : AbstractCoroutineContextElement(ContinuationInterceptor), ContinuationInterceptor {
     override fun <T> interceptContinuation(continuation: Continuation<T>): Continuation<T> =
         PoolContinuation(pool, continuation.context.fold(continuation) { cont, element ->
