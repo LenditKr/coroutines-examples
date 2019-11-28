@@ -7,9 +7,11 @@ import kotlin.coroutines.Continuation
 import kotlin.coroutines.ContinuationInterceptor
 import kotlin.coroutines.CoroutineContext
 
+// CoroutineContext
 object CommonPool : Pool(ForkJoinPool.commonPool())
 
 
+// ForkJoinPool을 이용해서 CoroutineContext 생성
 open class Pool(val pool: ForkJoinPool) : AbstractCoroutineContextElement(ContinuationInterceptor),
     ContinuationInterceptor {
     override fun <T> interceptContinuation(continuation: Continuation<T>): Continuation<T> =

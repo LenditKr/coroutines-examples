@@ -14,6 +14,7 @@ suspend fun makeRequest(): String {
     // inline: That is, it substitutes the body directly into places where the function gets called.
     // noinline: exclude inlining
     // crossinline: 다른 실행 context를 통해서 호출될때 비-로컬 흐름을 제어하고 싶을 경우
+    // suspendCoroutine: Obtains the current continuation instance inside suspend functions and suspends the currently running coroutine.
     return suspendCoroutine { c ->
         ForkJoinPool.commonPool().execute {
             c.resume("Result of the request")
