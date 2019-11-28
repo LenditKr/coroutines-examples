@@ -32,15 +32,8 @@ class ThreadContext(
     }
 
     /**
-     * Returns continuation that wraps the original [continuation], thus intercepting all resumptions.
-     * This function is invoked by coroutines framework when needed and the resulting continuations are
-     * cached internally per each instance of the original [continuation].
-     *
-     * This function may simply return original [continuation] if it does not want to intercept this particular continuation.
-     *
-     * When the original [continuation] completes, coroutine framework invokes [releaseInterceptedContinuation]
-     * with the resulting continuation if it was intercepted, that is if `interceptContinuation` had previously
-     * returned a different continuation instance.
+     * 원래의 [continuation] 을 wrapping 한 continuation 을 리턴하고 그래서 모든 재개를 인터셉트함.
+     * 필요시 coroutine 프레임워크에 의해서 실행되고 원래 각각의 continuation 인스턴스 내부에 결과가 caching 됨
      */
     override fun <T> interceptContinuation(continuation: Continuation<T>): Continuation<T> =
         ThreadContinuation(continuation.context.fold(continuation) { cont, element ->
