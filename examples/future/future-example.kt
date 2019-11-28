@@ -10,7 +10,9 @@ fun main(args: Array<String>) {
         println("start")
         val x = foo().await()
         println("got '$x'")
-        val y = bar(x).await()
+        // join == await
+        // val y = bar(x).await()
+        val y = bar(x).join()
         println("got '$y' after '$x'")
         y
     }
